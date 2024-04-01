@@ -15,7 +15,7 @@ win= tk.Tk()
 # Set the geometry of tkinter frame
 win.geometry("700x450")
 win.title("Sonus🎙️🔊")
-icon = tk.PhotoImage(file="icon.png")
+icon = tk.PhotoImage(file="code/icon.png")
 win.iconphoto(False, icon)
 
 # Create labels and text boxes for the recognized and translated text
