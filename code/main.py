@@ -71,6 +71,24 @@ input_lang.pack()
 down_arrow = tk.Label(win, text="▼")
 down_arrow.pack()
 
+output_lang_label = tk.Label(win, text="Select Output Language:")
+output_lang_label.pack()
+
+output_lang = ttk.Combobox(win, values=language_names)
+def update_output_lang_code(event):
+    selected_language_name = event.widget.get()
+    selected_language_code = language_codes[selected_language_name]
+    # Update the selected language code
+    output_lang.set(selected_language_code)
+output_lang.bind("<<ComboboxSelected>>", lambda e: update_output_lang_code(e))
+if output_lang.get() == "": output_lang.set("en")
+output_lang.pack()
+
+blank_space = tk.Label(win, text="")
+blank_space.pack()
+
+keep_running = False
+
 def update_translation():
     global keep_running
 
@@ -89,6 +107,16 @@ def update_translation():
                 if speech_text.lower() in {'exit', 'stop'}:
                     keep_running = False
                     return
+                
+                translated_text = GoogleTranslator(source=input_lang.get(), target=output_lang.get()).translate(text=speech_text_transliteration)
+                # print(translated_text)
+
+                voice = gTTS(translated_text, lang=output_lang.get())
+                voice.save('voice.mp3')
+                playsound('voice.mp3')
+                os.remove('voice.mp3')
+
+                output_text.insert(tk.END, translated_text + "\n")
                 
             except sr.UnknownValueError:
                 output_text.insert(tk.END, "Could not understand!\n")
@@ -109,6 +137,27 @@ def kill_execution():
     global keep_running
     keep_running = False
 
+def open_about_page():      # about page
+    about_window = tk.Toplevel()
+    about_window.title("About")
+    about_window.iconphoto(False, icon)
+
+    # Create a link to the GitHub repository
+    github_link = ttk.Label(about_window, text="github.com/SamirPaulb/real-time-voice-translator", underline=True, foreground="blue", cursor="hand2")
+    github_link.bind("<Button-1>", lambda e: open_webpage("https://github.com/SamirPaulb/real-time-voice-translator"))
+    github_link.pack()
+
+    # Create a text widget to display the about text
+    about_text = tk.Text(about_window, height=10, width=50)
+    about_text.insert("1.0", """
+    A machine learning project that translates voice from one language to another in real time while preserving the tone and emotion of the speaker, and outputs the result in MP3 format. Choose input and output languages from the dropdown menu and start the translation!
+    """)
+    about_text.pack()
+
+    # Create a "Close" button
+    close_button = tk.Button(about_window, text="Close", command=about_window.destroy)
+    close_button.pack()
+
 def open_webpage(url):      # Opens a web page in the user's default web browser.
     import webbrowser
     webbrowser.open(url)
@@ -122,6 +171,10 @@ run_button.place(relx=0.25, rely=0.9, anchor="c")
 # Create the "Kill" button
 kill_button = tk.Button(win, text="Kill Execution", command=kill_execution)
 kill_button.place(relx=0.5, rely=0.9, anchor="c")
+
+# Open about page button
+about_button = tk.Button(win, text="About this project", command=open_about_page)
+about_button.place(relx=0.75, rely=0.9, anchor="c")
 
 # Run the Tkinter event loop
 win.mainloop()
