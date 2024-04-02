@@ -1,14 +1,11 @@
 from __future__ import annotations
-
-import sys
-import os
 from cx_Freeze import Executable, setup
 
 setup(
-    name="voice-translator",
+    name="sonus",
     version="v2.0.1",
-    description="Real-Time Voice Translator GUI",
-    executables=[Executable("main.py", icon="icon.ico", target_name="voice-translator.exe")],
+    description="sonus GUI",
+    executables=[Executable("main.py", icon="icon.ico", target_name="sonus.exe")],
     options={
         "build_exe": {
             "include_files": [("icon.png")],
