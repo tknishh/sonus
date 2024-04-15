@@ -24,7 +24,4 @@ Sonus is a cutting-edge Python library and desktop application designed to revol
 - Requires Python 3.x.
 
 ## Authors
-- **[tknishh](https://github.com/tknishh)** - Founder and Lead Developer of Sonus.
-
-## Acknowledgements
-Special thanks to all contributors who have made Sonus a robust tool for enhancing LLM capabilities. We appreciate the community's effort in advancing this innovative project.
+- **[tknishh](https://github.com/tknishh)**
