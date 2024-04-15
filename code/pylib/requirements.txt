@@ -1,0 +1,7 @@
+pytesseract
+Pillow
+openai
+speech_recognition
+deep_translator
+gtts
+playsound
