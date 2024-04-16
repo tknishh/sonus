@@ -1,8 +1,3 @@
-Sure, I'll update the `README.md` to reflect the new name of your library, "Sonus-AV". Here's the revised content:
-
-### Updated `README.md` Content
-
-```markdown
 # Sonus-AV
 
 ## Description
@@ -55,5 +50,3 @@ Contributions are welcome! Please fork the repository and open a pull request wi
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details.
-
-```
