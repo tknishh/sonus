@@ -1,7 +1,9 @@
 pytesseract
 Pillow
 openai
-speech_recognition
+SpeechRecognition
 deep_translator
 gtts
 playsound
+python-dotenv
+pyaudio

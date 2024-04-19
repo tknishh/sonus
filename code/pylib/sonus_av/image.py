@@ -1,11 +1,12 @@
-import openai
+from openai import OpenAI
 from PIL import Image
 from io import BytesIO
+import base64
+import os
 
 class ImageProcessor:
     def __init__(self, openai_api_key):
         self.openai_api_key = openai_api_key
-        openai.api_key = self.openai_api_key
 
     def describe_image(self, image_path):
         """
@@ -19,14 +20,36 @@ class ImageProcessor:
         """
         try:
             img = Image.open(image_path)
-            img.save("/tmp/temp_image.jpg")  # Save image temporarily if needed
-            with open("/tmp/temp_image.jpg", "rb") as image_file:
-                image_data = image_file.read()
+            save_dir = "./tmp"
+            if not os.path.exists(save_dir):
+                os.makedirs(save_dir)
+            img.save(os.path.join(save_dir, "temp_image.jpg"))  # Save image temporarily if needed
+            with open("./tmp/temp_image.jpg", "rb") as image_file:
+                image_data = base64.b64encode(image_file.read()).decode('utf-8')
 
-            response = openai.Image.create(
-                image=image_data,
-                model="gpt-4-turbo"  # This model name is hypothetical
+            client = OpenAI()
+            response = client.chat.completions.create(
+            model="gpt-4-vision-preview",
+            messages=[
+                {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "What's in this image?"},
+                    {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:image/jpeg; base64, {image_data}",
+                        "detail": "high"
+                    },
+                    },
+                ],
+                }
+            ],
+            max_tokens=300,
             )
+
+            print(response.choices[0].message.content)
+
             description = response.choices[0].text.strip()
             return description
         except Exception as e:
